@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecossistema de IA para Upstream Product Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfbf9;
+            color: #1e293b;
+        }
+
+        .serif-title {
+            font-family: 'Merriweather', serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 280px;
+            max-height: 340px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 310px;
+            }
+        }
+
+        .tab-btn.active {
+            border-bottom: 2px solid #0f172a;
+            color: #0f172a;
+            font-weight: 700;
+            background-color: #f1f5f9;
+        }
+
+        .code-preview {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+    </style>
+</head>
+<body class="bg-[#fcfbf9] text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Chosen Palette: Warm Sand & Slate Academic Tech Neutral -->
+
+    <!-- Application Structure Plan:
+        1. Institutional Header & Context: AI Ecosystem for Upstream Product Management (PM Builder Model - MBA USP/Esalq).
+        2. Fast KPI Summary Cards: 16 Cognitive Agents, 3 Macrostages, 4 Context Engineering Parameters.
+        3. Navigation Tabs:
+           - 🤖 Matriz de Agentes (Interactive catalog with search, macrostage filters, and quick-load actions).
+           - ⚡ Prompt Studio Operacional (Interactive 4-vector context prompt generator with live markdown compiling and copy).
+           - 📚 Biblioteca de Prompts Prontos (Ready-to-use prompt templates for Discovery, PRD, User Stories, Business Case).
+           - 📐 Framework de Governança (Deep dive into context engineering, parameters, and human-in-the-loop audit guidelines).
+           - 📊 Visão Geral do Ecossistema (Summary metrics and functional distribution charts).
+        4. Rationale: Created as a standalone, highly practical tool so stakeholders and users can immediately test, copy, and apply the AI framework in their daily Upstream PM tasks.
+    -->
+
+    <!-- Visualization & Content Choices:
+        - 16 Cognitive Agents -> Goal: Interactive card matrix filterable by Discovery, Delivery, and Outcomes -> Direct click populates Prompt Studio.
+        - Dynamic Prompt Studio -> Goal: Combine 4 context vectors (Context, Evidence, Constraints, Audience) with selected Agent -> Instant output generation.
+        - Chart.js Visualizations -> Goal: Display functional coverage across macrostages using Canvas without grid lines -> Conformity to clean academic aesthetic.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="bg-[#0f172a] text-white border-b-4 border-slate-700 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-slate-700 text-white text-xs font-semibold px-2.5 py-0.5 rounded">MBA USP/Esalq</span>
+                        <span class="text-xs text-slate-300 font-medium">Modelo de Governança Operacional • Perfil PM Builder</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-bold serif-title mt-2 text-stone-100">
+                        Ecossistema de IA para Upstream Product Management
+                    </h1>
+                    <p class="text-sm text-slate-300 mt-1 max-w-3xl">
+                        Guia Interativo, Matriz de 16 Assistentes Cognitivos e Gerador de Prompts de Governança
+                    </p>
+                </div>
+                <div class="flex items-center bg-slate-800/90 p-3.5 rounded-xl border border-slate-700 space-x-3">
+                    <div class="text-right">
+                        <div class="text-xs text-slate-400">Escopo da Ferramenta</div>
+                        <div class="text-lg font-bold text-stone-100">16 Agentes • Upstream PM</div>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-stone-200 text-xl font-bold">
+                        ⚡
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- INTRODUCTORY CONTEXT -->
+        <section class="mb-8 bg-stone-100 border border-stone-300 rounded-xl p-5 shadow-sm">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-base font-bold text-stone-900 flex items-center gap-2">
+                        <span>📌</span> Ferramenta Interativa de Aplicação Prática de IA em Gestão de Produtos
+                    </h2>
+                    <p class="text-sm text-stone-800 mt-1 leading-relaxed">
+                        Esta aplicação foi desenvolvida para disponibilizar o <strong>Ecossistema de Assistentes Inteligentes para o Perfil PM Builder</strong>. Ela permite explorar os 16 agentes cognitivos, utilizar o gerador de prompts governados com engenharia de contexto em 4 vetores e acessar a biblioteca de templates para aceleração da fase de <strong>Upstream (Estratégia, Descoberta e Definição)</strong>.
+                    </p>
+                </div>
+                <button onclick="switchTab('tab-studio')" class="shrink-0 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-2 shadow-sm">
+                    <span>⚡</span> Abrir Gerador de Prompts
+                </button>
+            </div>
+        </section>
+
+        <!-- KPI SUMMARY CARDS -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white p-5 rounded-xl border border-stone-300 shadow-sm">
+                <div class="text-xs font-semibold text-stone-600 uppercase tracking-wider">Agentes Especializados</div>
+                <div class="text-2xl font-bold text-slate-900 mt-1">16 Agentes</div>
+                <div class="text-xs text-stone-600 font-medium mt-1">Distribuídos em 3 Macroetapas</div>
+                <div class="w-full bg-stone-200 h-1.5 rounded-full mt-3 overflow-hidden">
+                    <div class="bg-slate-900 h-full" style="width: 100%"></div>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border border-stone-300 shadow-sm">
+                <div class="text-xs font-semibold text-stone-600 uppercase tracking-wider">Estratégia & Discovery</div>
+                <div class="text-2xl font-bold text-slate-900 mt-1">6 Agentes</div>
+                <div class="text-xs text-stone-600 font-medium mt-1">37,5% da cobertura funcional</div>
+                <div class="w-full bg-stone-200 h-1.5 rounded-full mt-3 overflow-hidden">
+                    <div class="bg-stone-800 h-full" style="width: 37.5%"></div>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border border-stone-300 shadow-sm">
+                <div class="text-xs font-semibold text-stone-600 uppercase tracking-wider">Refinamento & Delivery</div>
+                <div class="text-2xl font-bold text-slate-900 mt-1">6 Agentes</div>
+                <div class="text-xs text-stone-600 font-medium mt-1">37,5% da cobertura funcional</div>
+                <div class="w-full bg-stone-200 h-1.5 rounded-full mt-3 overflow-hidden">
+                    <div class="bg-slate-700 h-full" style="width: 37.5%"></div>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border border-stone-300 shadow-sm">
+                <div class="text-xs font-semibold text-stone-600 uppercase tracking-wider">Vetores de Governança</div>
+                <div class="text-2xl font-bold text-slate-900 mt-1">4 Parâmetros</div>
+                <div class="text-xs text-stone-600 font-medium mt-1">Engenharia de Contexto Ativa</div>
+                <div class="w-full bg-stone-200 h-1.5 rounded-full mt-3 overflow-hidden">
+                    <div class="bg-stone-900 h-full" style="width: 100%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NAVIGATION TABS -->
+        <div class="border-b border-stone-300 mb-6 bg-white rounded-t-xl px-4 pt-2 shadow-sm">
+            <nav class="flex flex-wrap gap-2 sm:gap-6" aria-label="Tabs">
+                <button onclick="switchTab('tab-agents')" id="btn-tab-agents" class="tab-btn active py-3 px-3 rounded-t-md text-xs sm:text-sm font-medium transition-colors flex items-center gap-2">
+                    <span>🤖</span> Matriz dos 16 Agentes
+                </button>
+                <button onclick="switchTab('tab-studio')" id="btn-tab-studio" class="tab-btn py-3 px-3 rounded-t-md text-xs sm:text-sm font-medium text-stone-600 transition-colors flex items-center gap-2">
+                    <span>⚡</span> Prompt Studio (Gerador)
+                </button>
+                <button onclick="switchTab('tab-library')" id="btn-tab-library" class="tab-btn py-3 px-3 rounded-t-md text-xs sm:text-sm font-medium text-stone-600 transition-colors flex items-center gap-2">
+                    <span>📚</span> Prompts Prontos
+                </button>
+                <button onclick="switchTab('tab-framework')" id="btn-tab-framework" class="tab-btn py-3 px-3 rounded-t-md text-xs sm:text-sm font-medium text-stone-600 transition-colors flex items-center gap-2">
+                    <span>📐</span> Framework de Governança
+                </button>
+                <button onclick="switchTab('tab-overview')" id="btn-tab-overview" class="tab-btn py-3 px-3 rounded-t-md text-xs sm:text-sm font-medium text-stone-600 transition-colors flex items-center gap-2">
+                    <span>📊</span> Visão Geral & Métricas
+                </button>
+            </nav>
+        </div>
+
+        <!-- TAB 1: MATRIZ DE AGENTES COGNITIVOS -->
+        <div id="tab-agents" class="tab-content block space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-300 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-stone-200 gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Catálogo Interativo dos 16 Assistentes Cognitivos de IA</h2>
+                        <p class="text-xs text-stone-600 mt-0.5">
+                            Selecione um agente para visualizar sua finalidade funcional ou clique em <strong>"Usar no Gerador"</strong> para carregar suas configurações no Prompt Studio.
+                        </p>
+                    </div>
+
+                    <!-- SEARCH AND FILTER CONTROLS -->
+                    <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                        <div class="relative w-full sm:w-64">
+                            <input type="text" id="agent-search-input" onkeyup="filterAgents()" placeholder="Buscar por agente, palavra ou artefato..." class="w-full text-xs bg-stone-50 border border-stone-300 rounded-lg pl-8 pr-3 py-2 text-stone-900 focus:ring-2 focus:ring-slate-800">
+                            <span class="absolute left-2.5 top-2.5 text-xs text-stone-400">🔍</span>
+                        </div>
+                        <select id="agent-macro-filter" onchange="filterAgents()" class="w-full sm:w-auto text-xs bg-stone-50 border border-stone-300 rounded-lg p-2 font-medium text-stone-800 focus:ring-2 focus:ring-slate-800">
+                            <option value="ALL">Todas as Macroetapas (16 Agentes)</option>
+                            <option value="Discovery">Discovery & Estratégia (6 Agentes)</option>
+                            <option value="Delivery">Delivery & Refinamento (6 Agentes)</option>
+                            <option value="Outcomes">Outcomes & Impacto (4 Agentes)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="agents-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: PROMPT STUDIO OPERACIONAL (GERADOR) -->
+        <div id="tab-studio" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-300 shadow-sm">
+                <div class="pb-4 mb-4 border-b border-stone-200">
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span>⚡</span> Studio Gerador de Prompts de Governança Operacional
+                    </h2>
+                    <p class="text-xs text-stone-600 mt-1">
+                        Estruture suas instruções de IA com base nas 4 variáveis de Engenharia de Contexto para garantir saídas precisas, ancoradas em fatos e sem alucinações.
+                    </p>
+                </div>
+
+                <!-- PRESET BUTTONS FOR QUICK TESTING -->
+                <div class="bg-stone-100 p-3.5 rounded-lg border border-stone-300 mb-6 flex flex-wrap items-center justify-between gap-3">
+                    <div class="text-xs font-bold text-stone-800 flex items-center gap-1.5">
+                        <span>💡</span>
+                        <span>Exemplos Práticos para Teste Rápido:</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="loadPreset('discovery')" class="bg-white hover:bg-stone-200 text-stone-800 border border-stone-300 text-xs font-medium px-3 py-1 rounded transition-colors">
+                            1. Tensionar Hipótese de Onboarding
+                        </button>
+                        <button onclick="loadPreset('prd')" class="bg-white hover:bg-stone-200 text-stone-800 border border-stone-300 text-xs font-medium px-3 py-1 rounded transition-colors">
+                            2. Especificação de PRD Financeiro
+                        </button>
+                        <button onclick="loadPreset('roi')" class="bg-white hover:bg-stone-200 text-stone-800 border border-stone-300 text-xs font-medium px-3 py-1 rounded transition-colors">
+                            3. Business Case e ROI
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- FORM INPUTS -->
+                    <div class="lg:col-span-6 space-y-4 text-xs">
+                        <div>
+                            <label class="block font-bold text-stone-800 mb-1">1. Selecionar Agente Cognitivo:</label>
+                            <select id="studio-agent-select" onchange="updateStudioAgentDetails()" class="w-full bg-stone-50 border border-stone-300 rounded-lg p-2.5 font-medium text-stone-900 focus:ring-2 focus:ring-slate-800">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+
+                        <div id="studio-agent-info-card" class="p-3 bg-stone-100 border border-stone-300 rounded-lg text-stone-800 space-y-1">
+                            <!-- Populated dynamically -->
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-stone-800 mb-1">2. Contexto Operacional (Desafio & Oportunidade):</label>
+                            <textarea id="studio-context" rows="3" class="w-full bg-white border border-stone-300 rounded-lg p-2.5 text-stone-900 focus:ring-2 focus:ring-slate-800" placeholder="Ex: Identificamos um gargalo na taxa de conversão do fluxo de cadastro para clientes PME no produto de conta digital corporativa..."></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-stone-800 mb-1">3. Evidências & Dados Empíricos (Métricas, Fatos & Volumetria):</label>
+                            <textarea id="studio-data" rows="3" class="w-full bg-white border border-stone-300 rounded-lg p-2.5 text-stone-900 focus:ring-2 focus:ring-slate-800" placeholder="Ex: Queda de 18% no funil na etapa de envio de documentos; 340 chamados abertos no suporte por mês referentes a erros de validação de CNPJ..."></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold text-stone-800 mb-1">4. Restrições de Contorno:</label>
+                                <input id="studio-constraints" type="text" class="w-full bg-white border border-stone-300 rounded-lg p-2.5 text-stone-900 focus:ring-2 focus:ring-slate-800" value="Prazo máximo de 2 sprints; Em conformidade com a LGPD e Bacen; Sem alterações no microserviço de autenticação legado.">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-stone-800 mb-1">5. Audiência & Tom Destinatário:</label>
+                                <input id="studio-audience" type="text" class="w-full bg-white border border-stone-300 rounded-lg p-2.5 text-stone-900 focus:ring-2 focus:ring-slate-800" value="Diretoria de Produtos e Liderança de Engenharia; Tom pragmático, objetivo e fundamentado em trade-offs de negócio.">
+                            </div>
+                        </div>
+
+                        <button onclick="compilePrompt()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
+                            <span>🚀</span> Gerar Prompt Governado Próprio
+                        </button>
+                    </div>
+
+                    <!-- COMPILED PROMPT DISPLAY -->
+                    <div class="lg:col-span-6 bg-slate-900 text-slate-100 p-5 rounded-xl border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+                                <span class="text-xs font-mono text-slate-400">PROMPT DE GOVERNANÇA COMPILADO (PRONTO PARA USO)</span>
+                                <button onclick="copyCompiledPrompt()" class="bg-slate-800 hover:bg-slate-700 text-stone-200 text-xs px-3 py-1.5 rounded font-mono transition-colors flex items-center gap-1.5">
+                                    <span>📋</span> Copiar Prompt
+                                </button>
+                            </div>
+                            <pre id="studio-output-box" class="text-xs font-mono whitespace-pre-wrap text-stone-300 leading-relaxed max-h-[420px] overflow-y-auto pr-2">
+Clique em "Gerar Prompt Governado Próprio" ou carregue um exemplo acima para visualizar as instruções compilação no padrão de engenharia de contexto do MBA USP/Esalq.
+                            </pre>
+                        </div>
+
+                        <div id="studio-copy-toast" class="hidden mt-4 p-2.5 bg-slate-800 text-stone-200 text-xs rounded text-center font-mono border border-slate-700">
+                            ✅ Prompt de Governança copiado com sucesso para a área de transferência!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: BIBLIOTECA DE PROMPTS PRONTOS -->
+        <div id="tab-library" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-300 shadow-sm">
+                <div class="pb-4 mb-4 border-b border-stone-200">
+                    <h2 class="text-lg font-bold text-slate-900">Biblioteca de Templates de Prompts para Upstream PM</h2>
+                    <p class="text-xs text-stone-600 mt-1">
+                        Prompts pré-configurados e prontos para uso nos principais LLMs (ChatGPT, Claude, Gemini, DeepSeek) para artefatos do ciclo de produto.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- TEMPLATE 1 -->
+                    <div class="bg-stone-50 p-5 rounded-xl border border-stone-300 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[10px] font-bold px-2.5 py-0.5 rounded bg-stone-200 text-stone-900 border border-stone-400">Discovery</span>
+                                <span class="text-[10px] text-stone-500 font-mono">Tensionamento de Causa Raiz</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">Matriz CSD & Desconstrução de Demandas</h3>
+                            <p class="text-xs text-stone-600 mt-1">Utilize este prompt para desconstruir solicitações de soluções prontas trazidas por stakeholders e identificar a real causa raiz do problema.</p>
+                        </div>
+                        <div class="code-preview p-3 rounded text-[11px] max-h-36 overflow-y-auto">
+# PAPEL: Agente de Tensionamento de Hipóteses
+Atue como especialista em Upstream Product Management.
+# CONTEXTO: Recebemos a solicitação de criar uma nova dashboard customizada para clientes B2B.
+# TAREFA:
+1. Mapeie as Certezas, Suposições e Dúvidas (Matriz CSD).
+2. Formule 3 hipóteses falseáveis em torno da causa raiz.
+3. Proponha 2 abordagens enxutas de validação pré-desenvolvimento.
+                        </div>
+                        <button onclick="copyLibraryPrompt('lib-prompt-1')" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <span>📋</span> Copiar Prompt de Discovery
+                        </button>
+                        <div id="lib-prompt-1" class="hidden"># PAPEL: Agente de Tensionamento de Hipóteses
+Atue como especialista em Upstream Product Management.
+
+# CONTEXTO OPERACIONAL:
+Recebemos a solicitação direta de criar uma nova dashboard customizada para clientes B2B para redução de churn.
+
+# EVIDÊNCIAS E DADOS:
+Churn acumulado de 4,2% no último trimestre; feedback qualitativo de 8 clientes citando falta de visibilidade financeira.
+
+# RESTRIÇÕES:
+Sem capacidade de engenharia para desenvolvimento customizado no trimestre atual.
+
+# TAREFA:
+1. Mapeie as Certezas, Suposições e Dúvidas (Matriz CSD).
+2. Formule 3 hipóteses falseáveis em torno da causa raiz do problema.
+3. Proponha 2 abordagens enxutas de validação pré-desenvolvimento sem envolver código.</div>
+                    </div>
+
+                    <!-- TEMPLATE 2 -->
+                    <div class="bg-stone-50 p-5 rounded-xl border border-stone-300 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[10px] font-bold px-2.5 py-0.5 rounded bg-slate-200 text-slate-900 border border-slate-400">Delivery</span>
+                                <span class="text-[10px] text-stone-500 font-mono">Refinamento Técnico</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">Histórias de Usuário no Padrão INVEST & Gherkin</h3>
+                            <p class="text-xs text-stone-600 mt-1">Transforme requisitos de produto em histórias parametrizadas no modelo INVEST com critérios de aceite no formato BDD/Gherkin.</p>
+                        </div>
+                        <div class="code-preview p-3 rounded text-[11px] max-h-36 overflow-y-auto">
+# PAPEL: Gerador de Histórias de Usuário
+Atue como Product Manager especialista em engenharia de requisitos.
+# TAREFA:
+Converter os requisitos funcionais em Histórias de Usuário no modelo INVEST.
+Inclua critérios de aceite no formato Gherkin (Dado que / Quando / Então).
+                        </div>
+                        <button onclick="copyLibraryPrompt('lib-prompt-2')" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <span>📋</span> Copiar Prompt de User Stories
+                        </button>
+                        <div id="lib-prompt-2" class="hidden"># PAPEL: Gerador de Histórias de Usuário
+Atue como Product Manager especialista em engenharia de requisitos e agilidade.
+
+# CONTEXTO OPERACIONAL:
+Módulo de renegociação autônoma de dívidas em aplicativo bancário.
+
+# EVIDÊNCIAS E DADOS:
+Regras de negócio de desconto aprovadas pelo risco de crédito (até 30% à vista).
+
+# RESTRIÇÕES:
+Apenas transações em moeda nacional; resposta da API de risco em até 2 segundos.
+
+# TAREFA:
+1. Escreva 3 Histórias de Usuário estruturadas no padrão INVEST (Como [perfil], Quero [ação], Para que [benefício]).
+2. Para cada história, elabore pelo menos 2 cenários de teste/critérios de aceite sob a sintaxe Gherkin (Dado que / Quando / Então).</div>
+                    </div>
+
+                    <!-- TEMPLATE 3 -->
+                    <div class="bg-stone-50 p-5 rounded-xl border border-stone-300 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[10px] font-bold px-2.5 py-0.5 rounded bg-stone-300 text-stone-900 border border-stone-500">Outcomes</span>
+                                <span class="text-[10px] text-stone-500 font-mono">Análise Financeira</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">Business Case, Projeção de ROI e Payback</h3>
+                            <p class="text-xs text-stone-600 mt-1">Elabore defesas executivas de investimento com sustentação de ganhos operacionais, redução de custos e payback.</p>
+                        </div>
+                        <div class="code-preview p-3 rounded text-[11px] max-h-36 overflow-y-auto">
+# PAPEL: Analista de Viabilidade e Retorno Financeiro
+# TAREFA:
+Estruturar o modelo de viabilidade financeira para o projeto de automação de suporte por IA.
+Calcule o tempo estimado de Payback e a projeção de ROI em 12 meses.
+                        </div>
+                        <button onclick="copyLibraryPrompt('lib-prompt-3')" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <span>📋</span> Copiar Prompt de ROI
+                        </button>
+                        <div id="lib-prompt-3" class="hidden"># PAPEL: Analista de Viabilidade e Retorno Financeiro
+Atue como consultor financeiro corporativo especializado em produtos digitais.
+
+# CONTEXTO OPERACIONAL:
+Projeto de implementação de copiloto de IA para atendimento no suporte técnico de nível 1.
+
+# EVIDÊNCIAS E DADOS:
+Volume de 12.000 chamados mensais; custo médio por chamado humano de R$ 18,50; estimativa de deflexão automática de 35% das demandas repetitivas.
+
+# RESTRIÇÕES:
+Custo do software e API estimado em R$ 15.000/mês + R$ 40.000 de implementação inicial.
+
+# TAREFA:
+1. Elabore a projeção de economia líquida mensal e anual.
+2. Calcule o horizonte estimado de Payback (em meses) e a taxa de ROI para 12 meses.
+3. Apresente um resumo executivo direcionado ao CFO em 3 parágrafos.</div>
+                    </div>
+
+                    <!-- TEMPLATE 4 -->
+                    <div class="bg-stone-50 p-5 rounded-xl border border-stone-300 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[10px] font-bold px-2.5 py-0.5 rounded bg-stone-200 text-stone-900 border border-stone-400">Discovery</span>
+                                <span class="text-[10px] text-stone-500 font-mono">Comunicação Executiva</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">Síntese de Relatório Técnico para Diretoria</h3>
+                            <p class="text-xs text-stone-600 mt-1">Converta documentações técnicas e extensas em uma narrativa executiva orientada a tomadas de decisão táticas.</p>
+                        </div>
+                        <div class="code-preview p-3 rounded text-[11px] max-h-36 overflow-y-auto">
+# PAPEL: Arquiteto de Comunicação Executiva
+# TAREFA:
+Sintetizar o relatório de pesquisa de mercado e testes de usabilidade de 40 páginas em uma nota executiva de 1 página focada em decisões.
+                        </div>
+                        <button onclick="copyLibraryPrompt('lib-prompt-4')" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <span>📋</span> Copiar Prompt de Síntese
+                        </button>
+                        <div id="lib-prompt-4" class="hidden"># PAPEL: Arquiteto de Comunicação Executiva
+Atue como assessor de comunicação estratégica para C-Level.
+
+# CONTEXTO OPERACIONAL:
+Apresentação do diagnóstico de viabilidade para expansão do produto para a América Latina.
+
+# EVIDÊNCIAS E DADOS:
+Estudo técnico contendo 45 páginas, 12 tabelas de compliance regulatório e 3 cenários de projeção de demanda.
+
+# AUDIÊNCIA E TOM:
+Conselho de Administração e CEO; tom pragmático, conciso, focado em riscos, investimentos e retorno.
+
+# TAREFA:
+1. Sintetize as 45 páginas em 4 tópicos executivos (Oportunidade, Principais Riscos, Necessidade de Capital, Recomendação Final).
+2. Destaque os 3 trade-offs críticos que exigem aprovação da diretoria.</div>
+                    </div>
+                </div>
+
+                <div id="lib-copy-toast" class="hidden mt-4 p-3 bg-stone-200 text-stone-900 text-xs rounded-lg text-center font-medium border border-stone-300">
+                    ✅ Template de prompt copiado com sucesso!
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: FRAMEWORK DE GOVERNANÇA -->
+        <div id="tab-framework" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-300 shadow-sm space-y-6">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">Framework de Governança Operacional e Engenharia de Contexto</h2>
+                    <p class="text-xs text-stone-600 mt-1">
+                        Diretrizes formais para mitigar alucinações de LLMs e assegurar a reprodutibilidade técnica nas entregas de Upstream PM.
+                    </p>
+                </div>
+
+                <!-- 4 VECTORS GRID -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-stone-50 border border-stone-300 rounded-lg space-y-2">
+                        <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
+                            <span class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs">1</span>
+                            <span>Contexto Operacional</span>
+                        </div>
+                        <p class="text-xs text-stone-700 leading-relaxed">
+                            <strong>Pergunta orientadora:</strong> Qual é o problema de negócio e a oportunidade investigada?<br>
+                            <strong>Finalidade:</strong> Estabelece o enquadramento conceitual e delimita o cenário em análise, impedindo generalizações genéricas do modelo.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-stone-50 border border-stone-300 rounded-lg space-y-2">
+                        <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
+                            <span class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs">2</span>
+                            <span>Evidências e Dados Empíricos</span>
+                        </div>
+                        <p class="text-xs text-stone-700 leading-relaxed">
+                            <strong>Pergunta orientadora:</strong> Quais indicadores empíricos e volumetrias estão disponíveis?<br>
+                            <strong>Finalidade:</strong> Ancoragem fática para impedir inferências especulativas ou invenções estatísticas pelos assistentes generativos.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-stone-50 border border-stone-300 rounded-lg space-y-2">
+                        <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
+                            <span class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs">3</span>
+                            <span>Restrições de Contorno</span>
+                        </div>
+                        <p class="text-xs text-stone-700 leading-relaxed">
+                            <strong>Pergunta orientadora:</strong> Quais são os limites orçamentários, técnicos e regulatórios?<br>
+                            <strong>Finalidade:</strong> Balizamento de viabilidade prática para afastar soluções incompatíveis com a infraestrutura da organização.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-stone-50 border border-stone-300 rounded-lg space-y-2">
+                        <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
+                            <span class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs">4</span>
+                            <span>Audiência e Tom</span>
+                        </div>
+                        <p class="text-xs text-stone-700 leading-relaxed">
+                            <strong>Pergunta orientadora:</strong> Qual é o perfil do interlocutor destinatário da resposta?<br>
+                            <strong>Finalidade:</strong> Calibração precisa de linguagem entre termos estritamente técnicos de engenharia e o vocabulário executivo de negócios.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- HUMAN IN THE LOOP AUDIT GUIDELINES -->
+                <div class="bg-stone-100 p-5 rounded-xl border border-stone-300 space-y-3">
+                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                        <span>🛡️</span> Diretrizes de Auditoria e Curadoria Humana (Human-in-the-Loop)
+                    </h3>
+                    <ul class="text-xs text-stone-800 space-y-2 list-disc pl-5 leading-relaxed">
+                        <li><strong>Validação de Premissas Fáticas:</strong> Toda e qualquer métrica ou dado estatístico gerado pela IA deve ser obrigatoriamente auditado contra a fonte primária de telemetria da empresa antes do envio a stakeholders.</li>
+                        <li><strong>Responsabilidade Decisória Inalienável:</strong> A IA atua estritamente como suporte cognitivo para ampliação de repertório. A tomada de decisão e a priorização final do backlog permanecem sendo responsabilidade exclusiva do gestor de produtos.</li>
+                        <li><strong>Verificação de Compliance e LGPD:</strong> Nunca insira dados pessoais identificáveis (PII) de clientes ou dados bancários confidenciais nas janelas de contexto de LLMs públicos sem camadas prévias de anonimização.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: VISÃO GERAL & MÉTRICAS -->
+        <div id="tab-overview" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-300 shadow-sm space-y-6">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">Distribuição e Cobertura Funcional do Ecossistema</h2>
+                    <p class="text-xs text-stone-600 mt-1">
+                        Análise quantitativa da atuação dos assistentes cognitivos ao longo do ciclo de desenvolvimento de produtos digitais.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-stone-50 p-5 rounded-xl border border-stone-200">
+                        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 text-center">Agentes por Macroetapa do Ciclo de Produtos</h3>
+                        <div class="chart-container">
+                            <canvas id="chartMacrostages"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-stone-50 p-5 rounded-xl border border-stone-200">
+                        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 text-center">Distribuição de Entregáveis / Artefatos</h3>
+                        <div class="chart-container">
+                            <canvas id="chartArtifacts"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-stone-100 rounded-lg border border-stone-300 text-xs text-stone-800 leading-relaxed">
+                    <strong>Resumo da Arquitetura:</strong> O ecossistema equilibra a atuação entre as fases de planejamento estratégico pré-desenvolvimento (Upstream), suporte ao refinamento técnico e execução ágil (Delivery), e a medição de valor e sustentação pós-lançamento (Downstream / Outcomes), cobrindo de forma integral os principais gargalos operacionais identificados na gestão moderna de produtos.
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-xs">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p>Ecossistema de Inteligência Artificial para Upstream Product Management • Perfil PM Builder</p>
+            <p class="text-slate-500">Desenvolvido no âmbito do MBA em Gestão de Negócios Digitais e IA — USP/Esalq (2026)</p>
+        </div>
+    </footer>
+
+    <script>
+        // RAW DATA: 16 COGNITIVE AGENTS
+        const rawAgents = [
+            // MACROETAPA 1: DISCOVERY (6 AGENTES)
+            { id: "a1", macro: "Discovery", name: "Agente de Tensionamento de Hipóteses", moment: "Demandas pontuais de funcionalidades sem clareza do problema de negócio", artifact: "Modelagem da causa raiz, formulação de hipóteses falseáveis e estruturação da Matriz CSD", details: "Especializado em desconstruir certezas precipitadas trazidas por stakeholders e converter requisitos em testes empíricos de valor." },
+            { id: "a2", macro: "Discovery", name: "Orquestrador Metodológico de Descoberta", moment: "Diagnóstico empírico inconclusivo baseado em premissas subjetivas", artifact: "Definição de abordagens qualitativas/quantitativas e integração de requisitos operacionais", details: "Mapeia os caminhos de pesquisa adequados (entrevistas, data analytics, testes de conceito) minimizando o tempo de discovery." },
+            { id: "a3", macro: "Discovery", name: "Radar de Inteligência Competitiva", moment: "Planejamento estratégico periódico e defesas conceituais de roadmap", artifact: "Mapeamento de assimetrias concorrenciais e avaliação de riscos regulatórios de mercado", details: "Sintetiza movimentações de concorrentes, mudanças legislativas e benchmarks do setor para fundamentar o posicionamento de produto." },
+            { id: "a4", macro: "Discovery", name: "Treinador de OKRs e Conexão Estratégica", moment: "Formulação de metas e desdobramento analítico de objetivos corporativos", artifact: "Alinhamento causal entre visão executiva, indicadores de resultado e impacto financeiro", details: "Garante que cada iniciativa no backlog possua conexão lógica direta com um indicador-chave de desempenho (Key Result)." },
+            { id: "a5", macro: "Discovery", name: "Estrategista de Relacionamento e Influência", moment: "Condução de cenários organizacionais complexos e alinhamentos executivos", artifact: "Roteiros para negociações críticas e calibração de tom comunicacional para stakeholders", details: "Oferece suporte em governança organizacional, auxiliando o PM a conduzir alinhamentos de expectativas entre áreas jurídicas, comerciais e técnicas." },
+            { id: "a6", macro: "Discovery", name: "Arquiteto de Comunicação Executiva", moment: "Síntese de relatórios operacionais densos para a alta liderança", artifact: "Diagnóstico crítico e estruturação de narrativas executivas em formato orientado a decisões", details: "Traduz complexidades técnicas e volumetrias de dados em memorandos concisos focados em trade-offs de investimento." },
+
+            // MACROETAPA 2: DELIVERY (6 AGENTES)
+            { id: "a7", macro: "Delivery", name: "Estruturador de Especificações Técnicas (PRD)", moment: "Formalização do escopo funcional e arquitetura da solução técnica", artifact: "Memoriais descritivos fundamentados em evidências, eliminando dispersão conceitual", details: "Consolida requisitos funcionais, regras de negócio e fluxos de exceção em documentos padronizados e de rápida leitura para os times de engenharia." },
+            { id: "a8", macro: "Delivery", name: "Mapeador de Jornadas e Processos", moment: "Modelagem de fluxos que envolvem operações físicas e integrações de ponta a ponta", artifact: "Blueprints de serviços no padrão As-Is e To-Be com foco na remoção de fricções operacionais", details: "Mapeia visualmente e textualmente os pontos de contato do cliente com os sistemas back-office para identificar gargalos operacionais." },
+            { id: "a9", macro: "Delivery", name: "Gerador de Histórias de Usuário", moment: "Detalhamento do backlog para desenvolvimento de software", artifact: "Histórias parametrizadas no modelo INVEST com critérios de aceite sob a sintaxe Gherkin", details: "Atua na quebra de épicos em histórias operacionais prontas para desenvolvimento, reduzindo retrabalho nas cerimônias de refinamento." },
+            { id: "a10", macro: "Delivery", name: "Analista de Métricas e Consultas de Dados", moment: "Definição de planos de instrumentação pré-lançamento", artifact: "Formulação de planos de medição de sucesso e elaboração de consultas SQL para telemetria", details: "Auxilia na escrita de queries analíticas e na definição das tags de rastreamento necessárias para medir o comportamento do usuário." },
+            { id: "a11", macro: "Delivery", name: "Arquiteto de Engenharia de Prompts", moment: "Necessidade de criação ou refinamento de instruções complexas", artifact: "Modelagem avançada de diretrizes de contexto para agentes de linguagem natural", details: "Atua como especialista em otimizar e parametrizar promps avançados para integração em produtos alimentados por IA generativa." },
+            { id: "a12", macro: "Delivery", name: "Facilitador de Dinâmicas Colaborativas", moment: "Planejamento de ritos de ideação, design sprints e revisões de valor", artifact: "Roteiros estruturados e metodologias ativas para moderação de cerimônias técnicas", details: "Elabora guias de moderação para workshops de alinhamento, refinamentos de arquitetura e sessões de ideação." },
+
+            // MACROETAPA 3: OUTCOMES (4 AGENTES)
+            { id: "a13", macro: "Outcomes", name: "Analista de Viabilidade e Retorno Financeiro", moment: "Justificativa econômica e priorização de iniciativas estratégicas", artifact: "Projeção de retorno sobre o investimento (ROI), cálculo de payback e redução de custos", details: "Mapeia as economias de escala, impactos no LTV/CAC e custos de infraestrutura para elaboração do modelo financeiro da iniciativa." },
+            { id: "a14", macro: "Outcomes", name: "Gestor de Transição e Prontidão Operacional", moment: "Lançamento em larga escala e processos de homologação de sistemas", artifact: "Planos de comunicação, mapeamento de matrizes de resistência e narrativas de transição", details: "Garante a prontidão das equipes de suporte, atendimento e vendas antes da liberação de novas funcionalidades no ambiente de produção." },
+            { id: "a15", macro: "Outcomes", name: "Estruturador de Conteúdo e Capacitação", moment: "Difusão de processos operacionais e redução de taxas de erro", artifact: "Manuais de procedimentos, matrizes de boas práticas e guias de contingência padronizados", details: "Gera guias de utilização, release notes e materiais de treinamento para aceleração do ramp-up dos usuários." },
+            { id: "a16", macro: "Outcomes", name: "Comunicador de Resultados e Desempenho", moment: "Prestação de contas e demonstração do valor gerado pós-implementação", artifact: "Tradução de indicadores técnicos de engenharia em narrativas de impacto de negócio", details: "Mapeia os resultados alcançados após o lançamento, demonstrando o retorno gerado em relação às metas estabelecidas no discovery." }
+        ];
+
+        document.addEventListener("DOMContentLoaded", function () {
+            renderAgentsList();
+            populateStudioSelect();
+            initOverviewCharts();
+        });
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        }
+
+        function renderAgentsList() {
+            const grid = document.getElementById('agents-grid');
+            grid.innerHTML = '';
+
+            const searchTerm = document.getElementById('agent-search-input').value.toLowerCase();
+            const macroFilter = document.getElementById('agent-macro-filter').value;
+
+            const filtered = rawAgents.filter(agent => {
+                const matchesSearch = agent.name.toLowerCase().includes(searchTerm) || 
+                                     agent.artifact.toLowerCase().includes(searchTerm) ||
+                                     agent.moment.toLowerCase().includes(searchTerm);
+                const matchesMacro = macroFilter === 'ALL' || agent.macro === macroFilter;
+                return matchesSearch && matchesMacro;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full p-8 text-center text-xs text-stone-500 bg-stone-50 border border-dashed border-stone-300 rounded-lg">Nenhum agente cognitivo encontrado para os filtros selecionados.</div>`;
+                return;
+            }
+
+            filtered.forEach(agent => {
+                let badgeClass = "bg-stone-200 text-stone-900 border-stone-400";
+                if (agent.macro === "Delivery") badgeClass = "bg-slate-200 text-slate-900 border-slate-400";
+                if (agent.macro === "Outcomes") badgeClass = "bg-stone-300 text-slate-900 border-stone-500";
+
+                const card = document.createElement('div');
+                card.className = "bg-stone-50 p-4 rounded-xl border border-stone-300 shadow-sm flex flex-col justify-between space-y-3 hover:border-slate-800 transition-colors";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${badgeClass}">${agent.macro}</span>
+                            <span class="text-[10px] text-stone-500 font-mono">Agente #${agent.id}</span>
+                        </div>
+                        <h3 class="text-xs font-bold text-slate-900 leading-snug">${agent.name}</h3>
+                        <p class="text-[11px] text-stone-600 mt-1.5 leading-relaxed">${agent.details}</p>
+                    </div>
+
+                    <div class="text-[11px] space-y-1.5 border-t border-stone-200 pt-2.5 text-stone-800">
+                        <div><strong>Momento de Aplicação:</strong> ${agent.moment}</div>
+                        <div class="text-slate-900 font-medium"><strong>Artefato Esperado:</strong> ${agent.artifact}</div>
+                    </div>
+
+                    <div class="pt-1 flex gap-2">
+                        <button onclick="loadAgentIntoStudio('${agent.name}')" class="w-full text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white py-2 rounded-lg text-center transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                            <span>⚡</span> Usar no Gerador
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterAgents() {
+            renderAgentsList();
+        }
+
+        function populateStudioSelect() {
+            const select = document.getElementById('studio-agent-select');
+            select.innerHTML = '';
+
+            rawAgents.forEach(agent => {
+                const opt = document.createElement('option');
+                opt.value = agent.name;
+                opt.textContent = `[${agent.macro}] ${agent.name}`;
+                select.appendChild(opt);
+            });
+
+            updateStudioAgentDetails();
+        }
+
+        function updateStudioAgentDetails() {
+            const selectedName = document.getElementById('studio-agent-select').value;
+            const agent = rawAgents.find(a => a.name === selectedName);
+            const card = document.getElementById('studio-agent-info-card');
+
+            if (agent) {
+                card.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-stone-200 pb-1.5 mb-1.5">
+                        <span class="font-bold text-slate-900">${agent.name}</span>
+                        <span class="text-[10px] bg-slate-800 text-white px-2 py-0.5 rounded">${agent.macro}</span>
+                    </div>
+                    <div><strong>Aplicação Prática:</strong> ${agent.moment}</div>
+                    <div><strong>Entrega Principal:</strong> ${agent.artifact}</div>
+                `;
+            }
+        }
+
+        function loadAgentIntoStudio(agentName) {
+            switchTab('tab-studio');
+            document.getElementById('studio-agent-select').value = agentName;
+            updateStudioAgentDetails();
+            compilePrompt();
+        }
+
+        function compilePrompt() {
+            const agentName = document.getElementById('studio-agent-select').value;
+            const agent = rawAgents.find(a => a.name === agentName);
+
+            const context = document.getElementById('studio-context').value || "[Inserir Contexto Operacional da Organização / Desafio de Negócio]";
+            const data = document.getElementById('studio-data').value || "[Inserir Evidências Fáticas e Volumetrias Disponíveis]";
+            const constraints = document.getElementById('studio-constraints').value || "[Inserir Restrições Técnicas, Prazo e Compliance]";
+            const audience = document.getElementById('studio-audience').value || "[Inserir Perfil da Audiência Destinatária]";
+
+            const compiled = 
+`# PAPEL E ASSISTENTE COGNITIVO
+Você é o "${agent.name}", atuando como assistente cognitivo especializado em Upstream Product Management (Perfil PM Builder - MBA USP/Esalq).
+
+# OBJETIVO DO ARTEFATO
+Sua missão é gerar a seguinte entrega analítica com rigor metodológico:
+"${agent.artifact}"
+
+# DIRETRIZES DE ENGENHARIA DE CONTEXTO (MODELO DE GOVERNANÇA OPERACIONAL)
+
+1. CONTEXTO OPERACIONAL (Desafio e Oportunidade):
+   ${context}
+
+2. EVIDÊNCIAS E DADOS EMPÍRICOS (Ancoragem Fática sem Alucinações):
+   ${data}
+
+3. RESTRIÇÕES DE CONTORNO (Limites de Infraestrutura, Prazos e Regulatórios):
+   ${constraints}
+
+4. AUDIÊNCIA E TOM (Calibração Comunicacional):
+   ${audience}
+
+# INSTRUÇÕES RIGOROSAS DE PROCESSAMENTO E SAÍDA
+- Mantenha estrita adesão aos dados empíricos fornecidos, sem inventar estatísticas ou inferir volumetrias não fornecidas.
+- Estruture a resposta em formato modular, limpo e direto ao ponto, facilitando a tomada de decisão executiva e o refinamento técnico.
+- Apresente a entrega em tópicos acionáveis, destacando trade-offs e próximos passos recomendados.`;
+
+            document.getElementById('studio-output-box').textContent = compiled;
+        }
+
+        function copyCompiledPrompt() {
+            const text = document.getElementById('studio-output-box').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('studio-copy-toast');
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 3500);
+            });
+        }
+
+        function copyLibraryPrompt(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('lib-copy-toast');
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 3500);
+            });
+        }
+
+        function loadPreset(presetType) {
+            if (presetType === 'discovery') {
+                document.getElementById('studio-agent-select').value = "Agente de Tensionamento de Hipóteses";
+                document.getElementById('studio-context').value = "O time comercial relatou um aumento no cancelamento de clientes PME no onboarding, alegando que 'o produto é complexo demais'.";
+                document.getElementById('studio-data').value = "Taxa de churn de 14% no mês 1; 420 chamados abertos no suporte técnico sobre configuração inicial de conta Pix; tempo médio de setup atual de 18 dias.";
+                document.getElementById('studio-constraints').value = "Sem capacidade para refatoração completa do app nos próximos 3 meses; equipe de suporte limitada a 5 atendentes.";
+                document.getElementById('studio-audience').value = "Head de Produto e Líder de Customer Success; tom pragmático focado em quick-wins de retenção.";
+            } else if (presetType === 'prd') {
+                document.getElementById('studio-agent-select').value = "Estruturador de Especificações Técnicas (PRD)";
+                document.getElementById('studio-context').value = "Necessidade de estruturação de um novo módulo de liquidação financeira automática para e-commerce parceiro.";
+                document.getElementById('studio-data').value = "Volume estimado de R$ 4,5M transacionados/mês; tempo atual de reconciliação manual por planilha de 6 horas diárias.";
+                document.getElementById('studio-constraints').value = "Prazo impreterível de 2 sprints para atendimento a exigência regulatória do Bacen; integração via API REST existente.";
+                document.getElementById('studio-audience').value = "Time de Engenharia de Software e Arquiteto de Soluções; linguagem técnica precisa e orientada a edge cases.";
+            } else if (presetType === 'roi') {
+                document.getElementById('studio-agent-select').value = "Analista de Viabilidade e Retorno Financeiro";
+                document.getElementById('studio-context').value = "Aprovação de investimento corporativo para contratação de plataforma de testes A/B automatizados por IA.";
+                document.getElementById('studio-data').value = "Custo do software de R$ 60.000/ano; estimativa de ganho de 0,8 pontos percentuais na conversão da landing page principal.";
+                document.getElementById('studio-constraints').value = "Orçamento máximo anual de investimentos do departamento de R$ 100.000.";
+                document.getElementById('studio-audience').value = "CFO e Diretoria Executiva; tom estritamente financeiro focado em Payback, ROI e TIR.";
+            }
+
+            updateStudioAgentDetails();
+            compilePrompt();
+        }
+
+        function initOverviewCharts() {
+            // CHART 1: AGENTS BY MACROSTAGE
+            const ctx1 = document.getElementById('chartMacrostages').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['Discovery & Estratégia', 'Delivery & Refinamento', 'Outcomes & Impacto'],
+                    datasets: [{
+                        data: [6, 6, 4],
+                        backgroundColor: ['#0f172a', '#334155', '#64748b'],
+                        borderWidth: 1,
+                        borderColor: '#0f172a',
+                        barThickness: 28
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { drawOnChartArea: false }, border: { display: true, color: '#0f172a' } },
+                        y: { beginAtZero: true, stepSize: 1, grid: { drawOnChartArea: false }, border: { display: true, color: '#0f172a' } }
+                    }
+                }
+            });
+
+            // CHART 2: ARTIFACT DISTRIBUTION
+            const ctx2 = document.getElementById('chartArtifacts').getContext('2d');
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Estratégia & Validação', 'Especificação & Requisitos', 'Negociação & Governança', 'Análise Financeira & ROI'],
+                    datasets: [{
+                        data: [5, 5, 3, 3],
+                        backgroundColor: ['#0f172a', '#334155', '#64748b', '#94a3b8']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
